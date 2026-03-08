@@ -18,10 +18,18 @@ except:
     api_key = os.getenv("GEMINI_API_KEY")
 
 # Initialize LLM
-llm = LLM(
-    model="gemini/gemini-2.5-flash",
-    api_key=api_key
-)
+try:
+    llm = LLM(
+        model="gemini/gemini-2.0-flash-exp",
+        api_key=api_key
+    )
+except Exception as e:
+    # Fallback to LiteLLM if native provider fails
+    import litellm
+    llm = LLM(
+        model="gemini/gemini-1.5-flash",
+        api_key=api_key
+    )
 
 # Agency services knowledge base
 agency_services = """
